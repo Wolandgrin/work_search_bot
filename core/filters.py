@@ -15,6 +15,7 @@ DEFAULT_KEYWORDS = [
     "sdet",
     "ci/cd",
     "selenium",
+    "webdriver",
     "playwright",
     "pytest",
     "тестирование",

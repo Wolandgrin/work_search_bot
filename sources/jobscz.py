@@ -17,6 +17,10 @@ DEFAULT_QUERIES = [
     "CI/CD",
     "Lead automation",
     "Automation lead",
+    "Automation QA",
+    "Senior Test Engineer",
+    "Appium",
+    "Robot Framework",
 ]
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 MAX_PAGES = 3
