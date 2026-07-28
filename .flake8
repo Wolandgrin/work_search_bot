@@ -1,0 +1,11 @@
+[flake8]
+max-line-length = 120
+max-complexity = 10
+extend-ignore = E125,E127,E117,E128,E131,E203,E231,E261,E265,E501,E741,F841,C901
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    build,
+    dist
