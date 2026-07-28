@@ -2,7 +2,9 @@
 description: Deploy freelance_search Telegram bot to Oracle Cloud Free Tier VM (systemd, always-on)
 ---
 
-1. Provision an Oracle Cloud Free Tier VM (Ampere A1 or E2.1.Micro, Ubuntu 22.04), note its public IP, open port 22 in the Security List/NSG (no other inbound ports needed — bot only makes outbound HTTPS calls).
+1. Provision an Oracle Cloud Free Tier VM (Ampere A1 or E2.1.Micro, Ubuntu 24.04), note its public IP, open port 22 in the Security List/NSG (no other inbound ports needed — bot only makes outbound HTTPS calls).
+
+Current VM: 158.180.20.184, user `ubuntu`, key `~/Downloads/keys/ssh-key-2026-07-28.key`, Ubuntu 24.04 (Python 3.12.3 preinstalled — deadsnakes PPA not needed, project requires 3.11+, 3.12 is compatible).
 
 2. From local machine, copy the project to the VM (excludes `.venv`, `__pycache__`, `.git` via `.gitignore`-aware rsync):
 ```
@@ -19,16 +21,16 @@ scp /Users/Vladimir.Glushakov/code/freelance_search/.env ubuntu@<VM_IP>:/home/ub
 scp /Users/Vladimir.Glushakov/code/freelance_search/seen_jobs.db ubuntu@<VM_IP>:/home/ubuntu/freelance_search/seen_jobs.db
 ```
 
-5. SSH into the VM and install Python 3.11 + venv (Ubuntu 22.04 ships 3.10 by default, need deadsnakes PPA):
+5. SSH into the VM and install venv package (Ubuntu 24.04 ships Python 3.12 by default, which satisfies the project's 3.11+ requirement):
 ```
-ssh ubuntu@<VM_IP>
-sudo add-apt-repository -y ppa:deadsnakes/ppa && sudo apt update && sudo apt install -y python3.11 python3.11-venv
+ssh -i ~/Downloads/keys/ssh-key-2026-07-28.key ubuntu@<VM_IP>
+sudo apt update && sudo apt install -y python3-venv
 ```
 
 6. Create venv and install dependencies:
 ```
 cd /home/ubuntu/freelance_search
-python3.11 -m venv .venv
+python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 ```
 

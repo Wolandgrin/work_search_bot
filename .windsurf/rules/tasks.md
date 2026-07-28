@@ -53,6 +53,13 @@ TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID / KWORK_LOGIN / KWORK_PASSWORD в `.env` (
 
 ВАЖНО: исправлен баг дедупликации — `Job.dedup_key()` раньше использовал `title.lower()`, из-за чего разные вакансии с одинаковым названием у разных работодателей (частое явление на jobs.cz) схлопывались в одну. Теперь дедуп по `url`.
 
+## Deploy
+
+Задеплоено на Oracle Cloud Free Tier VM (2026-07-28): IP 158.180.20.184, user `ubuntu`, ключ `~/Downloads/keys/ssh-key-2026-07-28.key`, Ubuntu 24.04 (Python 3.12.3, venv в `/home/ubuntu/freelance_search/.venv`), systemd unit `freelance-bot.service` (enabled, автостарт). Инструкция: `.windsurf/workflows/deploy-oracle.md`.
+Git-репозиторий: github.com/wolandgrin/work_search_bot (personal, email vladimir.grin@gmail.com настроен локально в репо).
+Локальный процесс на Mac остановлен (во избежание дублей в Telegram) — теперь бот работает только на VM.
+На той же VM уже был развёрнут другой бот ранее — при пересоздании инстанса (из-за несовпадения SSH-ключа) он был удалён, если не был отдельно забэкаплен пользователем.
+
 ## Notes
 
 Проект стартовал 2026-07-27. См. `mcp_servers.md` для существующих MCP-инструментов.

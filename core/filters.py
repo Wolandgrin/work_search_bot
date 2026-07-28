@@ -2,8 +2,18 @@ from sources.models import Job
 
 DEFAULT_KEYWORDS = [
     "qa",
+    "qa lead",
+    "qa architect",
     "quality assurance",
     "test automation",
+    "test lead",
+    "test architect",
+    "test manager",
+    "qa team lead",
+    "automation lead",
+    "automation architect",
+    "sdet",
+    "ci/cd",
     "selenium",
     "playwright",
     "pytest",

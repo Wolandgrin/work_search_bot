@@ -6,7 +6,18 @@ import httpx
 from sources.models import Job
 
 BASE_URL = "https://www.jobs.cz/prace/"
-DEFAULT_QUERIES = ["QA Engineer", "QA Lead", "test automation", "SDET"]
+DEFAULT_QUERIES = [
+    "QA Engineer",
+    "QA Lead",
+    "test automation",
+    "SDET",
+    "Test Lead",
+    "Test Architect",
+    "QA Architect",
+    "CI/CD",
+    "Lead automation",
+    "Automation lead",
+]
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 MAX_PAGES = 3
 
