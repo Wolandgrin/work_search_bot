@@ -19,8 +19,8 @@ async def search_freelance_jobs(
     """Search freelance/remote job boards and permanent job vacancies.
 
     query: free-text search term, e.g. "python automation qa"
-    sources: subset of ["remotive", "remoteok", "weworkremotely", "flru", "kwork",
-        "guru", "freelancehunt", "jobscz"], default all
+    sources: subset of ["remotive", "remoteok", "weworkremotely", "flru",
+        "guru", "freelancehunt", "jobscz", "nofluffjobs"], default all
     limit_per_source: max results fetched per source before filtering
     keywords: optional keyword filter applied to title/description/tags
     """
