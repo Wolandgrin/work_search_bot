@@ -10,10 +10,13 @@
 | RemoteOK | API | remote-вакансии, фильтр на клиенте |
 | WeWorkRemotely | RSS | remote-вакансии |
 | FL.ru | scraping | фриланс-проекты (`flru-parser`) |
-| Kwork | scraping (нужен логин) | категория "Юзабилити, тесты и помощь" |
 | Guru | scraping | фриланс-проекты |
 | FreelanceHunt | API | ~10 последних проектов без токена |
 | Jobs.cz | scraping | постоянные вакансии в Чехии (QA Engineer/Lead/Test Lead/Architect/SDET) |
+| NoFluffJobs | API | постоянные вакансии, category=testing, Poland-heavy, дедуп по `reference` |
+| JustJoin.it | scraping (SSR HTML) | постоянные вакансии, category=testing, без авторизации |
+
+Отключён: Kwork (`sources/kwork.py`, не зарегистрирован в `core/aggregator.py`) — требует российский паспорт для регистрации, недоступен пользователю.
 
 ## Установка
 
@@ -35,11 +38,9 @@ pip install -r requirements-dev.txt
 ```env
 TELEGRAM_BOT_TOKEN=<токен бота из @BotFather>
 TELEGRAM_CHAT_ID=<chat_id, куда слать уведомления>
-KWORK_LOGIN=<email для kwork.ru>       # опционально, нужен только для источника kwork
-KWORK_PASSWORD=<пароль для kwork.ru>   # опционально
 ```
 
-`TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` обязательны для запуска бота. Без `KWORK_LOGIN`/`KWORK_PASSWORD` источник `kwork` просто не будет отдавать результаты.
+`TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` обязательны для запуска бота.
 
 ## Запуск бота (Telegram-уведомления)
 

@@ -28,11 +28,13 @@ sources/models.py            # Job (pydantic)
 sources/remotive.py          # free API
 sources/remoteok.py          # free API, client-side filter
 sources/weworkremotely.py    # RSS
-sources/flru.py              # flru-parser (scraping публичных страниц, без авторизации)
-sources/kwork.py             # kworker (pip), login KWORK_LOGIN/KWORK_PASSWORD, категория 81 "Юзабилити, тесты и помощь"
-sources/guru.py              # scraping guru.com/d/jobs/ (публично, без авторизации, regex-парсинг HTML)
+sources/flru.py              # flru-parser (scraping публичных страниц, без авторизации), retry при ValueError из-за бага flru.proxy.ProxyPool
+sources/kwork.py             # ОТКЛЮЧЁН, не зарегистрирован в aggregator.py — требует российский паспорт, недоступен пользователю
+sources/guru.py              # scraping guru.com/d/jobs/ (публично, без авторизации, regex-парсинг HTML), timeout=30
 sources/freelancehunt.py     # api.freelancehunt.com/v2/projects — публично, без токена, но только ~10 последних проектов (пагинация требует токен)
 sources/jobscz.py            # jobs.cz — постоянные вакансии (QA Lead/Automation QA/SDET и т.д. в Чехии), server-rendered HTML, без авторизации, мультизапросы по DEFAULT_QUERIES
+sources/nofluffjobs.py       # POST nofluffjobs.com/api/search/posting, category=testing, ~1200 вакансий (в основном Польша), дедуп по polnstyu `reference` (без этого одна вакансия дублируется по регионам)
+sources/justjoin.py          # justjoin.it/job-offers/all-locations/testing — данные рендерятся в SSR HTML (React), regex-парсинг, Плайврайт не потребовался, ~100 вакансий/запрос, ~34% с зарплатой
 core/filters.py              # DEFAULT_KEYWORDS: qa, quality assurance, test automation, selenium, playwright, pytest,
                               # тестирование, тестировщик, автотест
                               # matches_keywords: title/tags(≤10) точное ИЛИ ≥2 keyword в description (MIN_DESCRIPTION_MATCHES)
@@ -45,13 +47,20 @@ bot/run_bot.py                 # entrypoint: python -m bot.run_bot
 ```
 
 Бот @bybit_scalpingbot (общий с binScalp, используется только sendMessage, без getUpdates/polling).
-TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID / KWORK_LOGIN / KWORK_PASSWORD в `.env` (в .gitignore, не коммитить).
+TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID в `.env` (в .gitignore, не коммитить).
 
-ВАЖНО: пакет `kwork` (PyPI) требует pydantic<2.0 и ЛОМАЕТ проект — использовать только `kworker` (pydantic>=2.11).
+ВАЖНО: пакет `kwork` (PyPI) требует pydantic<2.0 и ЛОМАЕТ проект — использовать только `kworker` (pydantic>=2.11). С 2026-08-02 источник kwork отключён вообще (требует российский паспорт, у пользователя его нет).
 
 Проверено вручную (2026-07-28): 8 источников (Remotive/RemoteOK/WWR/FL.ru/Kwork/Guru/FreelanceHunt/Jobs.cz) отдают данные, бот в фоне шлёт сообщения в Telegram. Jobs.cz добавлен как источник постоянных вакансий (QA Lead/Automation QA/SDET) в Чехии — 25 вакансий разослано в первом прогоне.
 
 ВАЖНО: исправлен баг дедупликации — `Job.dedup_key()` раньше использовал `title.lower()`, из-за чего разные вакансии с одинаковым названием у разных работодателей (частое явление на jobs.cz) схлопывались в одну. Теперь дедуп по `url`.
+
+Изменения 2026-08-02:
+- Kwork отключён (требует российский паспорт, недоступен пользователю).
+- Добавлен NoFluffJobs (`sources/nofluffjobs.py`) — API `nofluffjobs.com/api/search/posting`, category=testing. Обнаружен и исправлен баг: одна вакансия возвращалась как десятки дублей (отдельная запись на каждый регион), все с одинаковым `reference` — теперь дедуп по этому полю внутри источника, а города собираются в одно поле location. `region`/`regions` параметры API не работают (всегда возвращает Польшу), поэтому фильтрация только по ключевым словам как у остальных широких источников.
+- Добавлен JustJoin.it (`sources/justjoin.py`). Старый API (`api.justjoin.it`) мёртв. Реверс показал: данные рендерятся сервером прямо в HTML (Next.js SSR) на `justjoin.it/job-offers/all-locations/testing`, поэтому Playwright не потребовался — обычный httpx GET + regex-парсинг (как jobscz.py). ~100 вакансий за запрос, зарплата в EUR/h или EUR/day у ~34%.
+- Исправлены intermittent ошибки на VM: `remoteok`/`guru` timeout 15→30с (`httpx.ReadTimeout`); `flru` — retry на `ValueError: min() iterable argument is empty` (баг в `flru.proxy.ProxyPool.acquire()`, внутри сторонней библиотеки, не исправлен в источнике, только обойдён).
+- Установлены Playwright + chromium для разведки JustJoin.it API, после — удалены из venv (не нужен в production, источники работают через httpx).
 
 ## Deploy
 
