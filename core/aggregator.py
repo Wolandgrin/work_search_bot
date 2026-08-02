@@ -3,7 +3,7 @@ import logging
 from datetime import datetime, timezone
 
 from core.filters import filter_jobs
-from sources import flru, freelancehunt, guru, jobscz, nofluffjobs, remoteok, remotive, weworkremotely
+from sources import flru, freelancehunt, guru, jobscz, justjoin, nofluffjobs, remoteok, remotive, weworkremotely
 from sources.models import Job
 
 logger = logging.getLogger(__name__)
@@ -18,6 +18,7 @@ SOURCE_ADAPTERS = {
     "freelancehunt": freelancehunt.fetch_jobs,
     "jobscz": jobscz.fetch_jobs,
     "nofluffjobs": nofluffjobs.fetch_jobs,
+    "justjoin": justjoin.fetch_jobs,
 }
 
 
