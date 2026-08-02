@@ -10,31 +10,31 @@ Credentials: `.env.mcps`. Config: `mcp_config.json` → sync to `~/.codeium/wind
 
 ## Jenkins CLI
 ```bash
-python3 ~/Documents/code/MCPs/jenkins_cli.py list|folder|search|job|build|log|stop
+python3 ~/code/MCPs/jenkins_cli.py list|folder|search|job|build|log|stop
 ```
 URL: https://ati-aqa-jenkins.do.acronis.fun
 
 ## TestRail CLI
 ```bash
-python3 ~/Documents/code/MCPs/testrail_cli.py case|run|search
+python3 ~/code/MCPs/testrail_cli.py case|run|search
 ```
 URL: https://testrail.corp.acronis.com
 
 ## Bitbucket CLI
 ```bash
-python3 ~/Documents/code/MCPs/bitbucket_cli.py pr|comments|list|search
+python3 ~/code/MCPs/bitbucket_cli.py pr|comments|list|search
 ```
 URL: https://git.acronis.work
 
 ## Jira / Confluence (via VM proxy)
 ```bash
-python3 ~/Documents/code/MCPs/jira_cli.py issue|search|confluence|epic|create|sprint-list|sprint-add
+python3 ~/code/MCPs/jira_cli.py issue|search|confluence|epic|create|sprint-list|sprint-add
 ```
 VM proxy: http://10.146.1.215:9000/mcp
 
 ## Sync Windsurf MCP config
 ```bash
-cp ~/Documents/code/MCPs/mcp_config.json ~/.codeium/windsurf/mcp_config.json
+cp ~/code/MCPs/mcp_config.json ~/.codeium/windsurf/mcp_config.json
 ```
 
 ## Playwright MCP

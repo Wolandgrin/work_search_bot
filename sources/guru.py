@@ -36,7 +36,7 @@ def _parse_relative_time(text: str) -> datetime | None:
 async def fetch_jobs(query: str, limit: int = 50) -> list[Job]:
     query_lower = query.lower() if query else ""
     jobs: list[Job] = []
-    async with httpx.AsyncClient(headers=HEADERS, timeout=15, follow_redirects=True) as client:
+    async with httpx.AsyncClient(headers=HEADERS, timeout=30, follow_redirects=True) as client:
         page = 1
         while len(jobs) < limit and page <= MAX_PAGES:
             url = GURU_JOBS_URL if page == 1 else GURU_JOBS_PAGE_URL.format(page=page)

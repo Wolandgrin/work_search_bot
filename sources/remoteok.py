@@ -10,7 +10,7 @@ USER_AGENT = "Mozilla/5.0 (compatible; freelance-search-mcp/1.0)"
 
 async def fetch_jobs(query: str, limit: int = 50) -> list[Job]:
     headers = {"User-Agent": USER_AGENT}
-    async with httpx.AsyncClient(timeout=15, headers=headers) as client:
+    async with httpx.AsyncClient(timeout=30, headers=headers) as client:
         response = await client.get(REMOTEOK_API_URL)
         response.raise_for_status()
         payload = response.json()
