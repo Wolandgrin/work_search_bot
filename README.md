@@ -15,6 +15,8 @@
 | Jobs.cz | scraping | постоянные вакансии в Чехии (QA Engineer/Lead/Test Lead/Architect/SDET) |
 | NoFluffJobs | API | постоянные вакансии, category=testing, Poland-heavy, дедуп по `reference` |
 | JustJoin.it | scraping (SSR HTML) | постоянные вакансии, category=testing, без авторизации |
+| StartupJobs.cz | API (JSON) | постоянные вакансии, server-side keyword/лимит игнорируются — фильтрация на клиенте |
+| LinkedIn | scraping (guest endpoint) | серая зона ToS, низкочастотно (1 запрос/poll, 10 результатов, Прага) |
 
 Отключён: Kwork (`sources/kwork.py`, не зарегистрирован в `core/aggregator.py`) — требует российский паспорт для регистрации, недоступен пользователю.
 
@@ -72,6 +74,10 @@ python main.py
 Чтобы добавить новую роль — допиши строку в список. Осторожно с короткими общими словами (например голое `"team lead"` или `"test"`) — они могут пропускать нерелевантные вакансии из других областей.
 
 Для `jobs.cz` (`sources/jobscz.py:DEFAULT_QUERIES`) фильтрация происходит на уровне поисковых запросов к самому сайту — там свой список фраз для server-side поиска.
+
+`startupjobs.cz`: параметры `keyword`/`limit` в публичном API игнорируются сервером (возвращает все ~410 активных вакансий постранично) — фильтрация по `DEFAULT_KEYWORDS` происходит внутри адаптера (`sources/startupjobs.py`) до применения лимита, иначе релевантные вакансии могли бы не попасть в первые `limit_per_source` результатов.
+
+`linkedin`: единственный источник, дергающий "guest"-эндпоинт LinkedIn без логина (`sources/linkedin.py`). Ограничен одним запросом за опрос (10 результатов, локация "Prague, Czechia", keywords — булева OR-строка по QA-ролям) — сознательно низкая частота, чтобы не спровоцировать блокировку IP VM. Это серая зона ToS (см. `.windsurf/rules/tasks.md`).
 
 ## Добавление нового источника
 
