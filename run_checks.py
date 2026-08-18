@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 PYTHON = sys.executable
-TARGET_DIRS = ["bot", "core", "sources", "main.py", "run_checks.py"]
+TARGET_DIRS = ["bot", "core", "sources", "run_checks.py"]
 
 
 def print_step(num, text):

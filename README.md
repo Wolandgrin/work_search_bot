@@ -1,6 +1,6 @@
 # freelance_search
 
-Агрегатор вакансий/фриланс-проектов (QA, test automation, quality engineering) с уведомлениями в Telegram и MCP-сервером для поиска по запросу.
+Агрегатор вакансий/фриланс-проектов (QA, test automation, quality engineering) с уведомлениями в Telegram.
 
 ## Источники
 
@@ -54,14 +54,6 @@ python -m bot.run_bot
 - каждые 15 минут (`bot/scheduler.py:POLL_INTERVAL_MINUTES`) опрашиваются все источники;
 - вакансии фильтруются по ключевым словам (`core/filters.py:DEFAULT_KEYWORDS`);
 - новые (не встречавшиеся ранее) вакансии отправляются в Telegram и запоминаются в `seen_jobs.db` (SQLite), чтобы не дублировать уведомления при следующих запусках.
-
-## Запуск как MCP-сервер
-
-```bash
-python main.py
-```
-
-Предоставляет tool `search_freelance_jobs(query, sources, limit_per_source, keywords)` — можно вызывать из Cascade/Claude/другого MCP-клиента для разового поиска по произвольному запросу, без Telegram.
 
 ## Настройка фильтрации (ключевые слова)
 
